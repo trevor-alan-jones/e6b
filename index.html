@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Trevor Alan E6B</title>
+</head>
+<body>
+  <h1>Trevor Alan E6B</h1>
+  <p>Free aviation calculators for pilots and students.</p>
+
+  <h2>Time / Speed / Distance</h2>
+  <input id="speed" placeholder="Speed in knots">
+  <input id="time" placeholder="Time in hours">
+  <button onclick="calcDistance()">Calculate Distance</button>
+  <p id="result"></p>
+
+  <script>
+    function calcDistance() {
+      const speed = Number(document.getElementById("speed").value);
+      const time = Number(document.getElementById("time").value);
+      document.getElementById("result").textContent =
+        `Distance: ${(speed * time).toFixed(1)} NM`;
+    }
+  </script>
+</body>
+</html>
