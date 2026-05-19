@@ -4,312 +4,192 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trevor Alan E6B</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #0f172a;
-      color: #f8fafc;
-    }
-
-    header {
-      padding: 28px 18px;
-      text-align: center;
-      background: #020617;
-      border-bottom: 1px solid #334155;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    .subtitle {
-      color: #cbd5e1;
-      margin-top: 8px;
-    }
-
-    main {
-      max-width: 950px;
-      margin: auto;
-      padding: 20px;
-      display: grid;
-      gap: 18px;
-    }
-
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #93c5fd;
-    }
-
-    label {
-      display: block;
-      margin-top: 12px;
-      color: #e2e8f0;
-    }
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #475569;
-      background: #0f172a;
-      color: white;
-      font-size: 1rem;
-    }
-
-    button {
-      margin-top: 16px;
-      width: 100%;
-      padding: 12px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .result {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      background: #020617;
-      border: 1px solid #334155;
-      color: #bbf7d0;
-      font-weight: bold;
-    }
-
-    .note {
-      color: #cbd5e1;
-      font-size: 0.9rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #94a3b8;
-      font-size: 0.85rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <header>
+  <header class="hero">
     <h1>Trevor Alan E6B</h1>
-    <div class="subtitle">Aviation calculators for pilots, students, and instructors</div>
+    <p>Reverse-solving aviation calculators for pilots, students, and instructors.</p>
   </header>
 
-  <main>
-    <div class="card">
+  <main class="app">
+
+    <section class="card">
       <h2>Time / Speed / Distance</h2>
-      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+      <p class="note">Enter any two values. Leave the unknown blank.</p>
 
-      <label>Speed - knots</label>
-      <input id="tsdSpeed" type="number" placeholder="Example: 120">
+      <label>Speed — knots</label>
+      <input id="tsdSpeed" type="number" inputmode="decimal">
 
-      <label>Time - hours</label>
-      <input id="tsdTime" type="number" placeholder="Example: 2.5">
+      <label>Time — hours</label>
+      <input id="tsdTime" type="number" inputmode="decimal">
 
-      <label>Distance - nautical miles</label>
-      <input id="tsdDistance" type="number" placeholder="Example: 300">
+      <label>Distance — NM</label>
+      <input id="tsdDistance" type="number" inputmode="decimal">
 
-      <button onclick="solveTSD()">Solve</button>
+      <div class="buttons">
+        <button onclick="solveTSD()">Solve</button>
+        <button class="secondary" onclick="clearFields(['tsdSpeed','tsdTime','tsdDistance'], 'tsdResult')">Clear</button>
+      </div>
+
       <div class="result" id="tsdResult">Result will appear here.</div>
-    </div>
+      <div class="formula">Distance = Speed × Time</div>
+    </section>
 
-    <div class="card">
+    <section class="card">
       <h2>Fuel / Burn / Time</h2>
-      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+      <p class="note">Enter any two values. Leave the unknown blank.</p>
 
-      <label>Fuel Used - gallons</label>
-      <input id="fuelUsed" type="number" placeholder="Example: 24">
+      <label>Fuel Used — gallons</label>
+      <input id="fuelUsed" type="number" inputmode="decimal">
 
-      <label>Burn Rate - gallons per hour</label>
-      <input id="burnRate" type="number" placeholder="Example: 8">
+      <label>Burn Rate — GPH</label>
+      <input id="burnRate" type="number" inputmode="decimal">
 
-      <label>Time - hours</label>
-      <input id="fuelTime" type="number" placeholder="Example: 3">
+      <label>Time — hours</label>
+      <input id="fuelTime" type="number" inputmode="decimal">
 
-      <button onclick="solveFuel()">Solve</button>
+      <div class="buttons">
+        <button onclick="solveFuel()">Solve</button>
+        <button class="secondary" onclick="clearFields(['fuelUsed','burnRate','fuelTime'], 'fuelResult')">Clear</button>
+      </div>
+
       <div class="result" id="fuelResult">Result will appear here.</div>
-    </div>
+      <div class="formula">Fuel = Burn Rate × Time</div>
+    </section>
 
-    <div class="card">
+    <section class="card">
       <h2>Top of Descent</h2>
-      <p class="note">Enter any two values and leave distance, altitude, or descent gradient blank.</p>
+      <p class="note">Enter any two values. Leave the unknown blank.</p>
 
-      <label>Altitude to Lose - feet</label>
-      <input id="todAltitude" type="number" placeholder="Example: 6000">
+      <label>Altitude to Lose — feet</label>
+      <input id="todAltitude" type="number" inputmode="decimal">
 
-      <label>Descent Gradient - feet per NM</label>
-      <input id="todGradient" type="number" placeholder="Example: 300">
+      <label>Descent Gradient — ft/NM</label>
+      <input id="todGradient" type="number" inputmode="decimal" placeholder="Example: 300">
 
-      <label>Distance - nautical miles</label>
-      <input id="todDistance" type="number" placeholder="Example: 20">
+      <label>Distance — NM</label>
+      <input id="todDistance" type="number" inputmode="decimal">
 
-      <button onclick="solveTOD()">Solve</button>
+      <div class="buttons">
+        <button onclick="solveTOD()">Solve</button>
+        <button class="secondary" onclick="clearFields(['todAltitude','todGradient','todDistance'], 'todResult')">Clear</button>
+      </div>
+
       <div class="result" id="todResult">Result will appear here.</div>
-    </div>
+      <div class="formula">Distance = Altitude to Lose ÷ Descent Gradient</div>
+    </section>
 
-    <div class="card">
+    <section class="card">
       <h2>Climb Gradient</h2>
-      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+      <p class="note">Enter any two values. Leave the unknown blank.</p>
 
-      <label>Climb Rate - feet per minute</label>
-      <input id="climbRate" type="number" placeholder="Example: 700">
+      <label>Climb Rate — FPM</label>
+      <input id="climbRate" type="number" inputmode="decimal">
 
-      <label>Groundspeed - knots</label>
-      <input id="climbSpeed" type="number" placeholder="Example: 90">
+      <label>Groundspeed — knots</label>
+      <input id="climbSpeed" type="number" inputmode="decimal">
 
-      <label>Climb Gradient - feet per NM</label>
-      <input id="climbGradient" type="number" placeholder="Example: 467">
+      <label>Climb Gradient — ft/NM</label>
+      <input id="climbGradient" type="number" inputmode="decimal">
 
-      <button onclick="solveClimb()">Solve</button>
+      <div class="buttons">
+        <button onclick="solveClimb()">Solve</button>
+        <button class="secondary" onclick="clearFields(['climbRate','climbSpeed','climbGradient'], 'climbResult')">Clear</button>
+      </div>
+
       <div class="result" id="climbResult">Result will appear here.</div>
-    </div>
+      <div class="formula">Gradient = Climb Rate × 60 ÷ Groundspeed</div>
+    </section>
 
-    <div class="card">
+    <section class="card">
+      <h2>Crosswind / Headwind</h2>
+      <p class="note">Enter runway heading, wind direction, and wind speed.</p>
+
+      <label>Runway Heading — degrees</label>
+      <input id="runwayHeading" type="number" inputmode="decimal" placeholder="Example: 180">
+
+      <label>Wind Direction — degrees</label>
+      <input id="windDirection" type="number" inputmode="decimal" placeholder="Example: 220">
+
+      <label>Wind Speed — knots</label>
+      <input id="windSpeed" type="number" inputmode="decimal" placeholder="Example: 18">
+
+      <div class="buttons">
+        <button onclick="solveCrosswind()">Solve</button>
+        <button class="secondary" onclick="clearFields(['runwayHeading','windDirection','windSpeed'], 'crosswindResult')">Clear</button>
+      </div>
+
+      <div class="result" id="crosswindResult">Result will appear here.</div>
+      <div class="formula">Crosswind = Wind Speed × sin(angle)</div>
+    </section>
+
+    <section class="card">
+      <h2>Pressure Altitude</h2>
+      <p class="note">Uses altimeter setting and field elevation.</p>
+
+      <label>Field Elevation — feet</label>
+      <input id="fieldElevation" type="number" inputmode="decimal">
+
+      <label>Altimeter Setting — inHg</label>
+      <input id="altimeterSetting" type="number" inputmode="decimal" placeholder="Example: 29.72">
+
+      <div class="buttons">
+        <button onclick="solvePressureAltitude()">Solve</button>
+        <button class="secondary" onclick="clearFields(['fieldElevation','altimeterSetting'], 'pressureResult')">Clear</button>
+      </div>
+
+      <div class="result" id="pressureResult">Result will appear here.</div>
+      <div class="formula">Pressure Altitude = Field Elevation + (29.92 − Altimeter) × 1000</div>
+    </section>
+
+    <section class="card">
+      <h2>Density Altitude</h2>
+      <p class="note">Approximate training calculation.</p>
+
+      <label>Pressure Altitude — feet</label>
+      <input id="densityPressureAlt" type="number" inputmode="decimal">
+
+      <label>Outside Air Temperature — °C</label>
+      <input id="oat" type="number" inputmode="decimal">
+
+      <div class="buttons">
+        <button onclick="solveDensityAltitude()">Solve</button>
+        <button class="secondary" onclick="clearFields(['densityPressureAlt','oat'], 'densityResult')">Clear</button>
+      </div>
+
+      <div class="result" id="densityResult">Result will appear here.</div>
+      <div class="formula">Density Altitude ≈ Pressure Altitude + 120 × (OAT − ISA Temp)</div>
+    </section>
+
+    <section class="card">
       <h2>Weight / Arm / Moment</h2>
-      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+      <p class="note">Enter any two values. Leave the unknown blank.</p>
 
-      <label>Weight - pounds</label>
-      <input id="wbWeight" type="number" placeholder="Example: 170">
+      <label>Weight — lb</label>
+      <input id="wbWeight" type="number" inputmode="decimal">
 
-      <label>Arm - inches</label>
-      <input id="wbArm" type="number" placeholder="Example: 37">
+      <label>Arm — inches</label>
+      <input id="wbArm" type="number" inputmode="decimal">
 
       <label>Moment</label>
-      <input id="wbMoment" type="number" placeholder="Example: 6290">
+      <input id="wbMoment" type="number" inputmode="decimal">
 
-      <button onclick="solveWB()">Solve</button>
+      <div class="buttons">
+        <button onclick="solveWB()">Solve</button>
+        <button class="secondary" onclick="clearFields(['wbWeight','wbArm','wbMoment'], 'wbResult')">Clear</button>
+      </div>
+
       <div class="result" id="wbResult">Result will appear here.</div>
-    </div>
+      <div class="formula">Moment = Weight × Arm</div>
+    </section>
+
   </main>
 
   <footer>
-    Trevor Alan E6B • For training and educational use only
+    Trevor Alan E6B • For training and educational use only. Verify with official aircraft documents.
   </footer>
 
-  <script>
-    function getValue(id) {
-      const value = document.getElementById(id).value;
-      return value === "" ? null : Number(value);
-    }
-
-    function countFilled(values) {
-      return values.filter(v => v !== null && !isNaN(v)).length;
-    }
-
-    function solveTSD() {
-      const speed = getValue("tsdSpeed");
-      const time = getValue("tsdTime");
-      const distance = getValue("tsdDistance");
-
-      if (countFilled([speed, time, distance]) !== 2) {
-        document.getElementById("tsdResult").textContent = "Enter exactly two values.";
-        return;
-      }
-
-      if (distance === null) {
-        document.getElementById("tsdResult").textContent = `Distance = ${(speed * time).toFixed(1)} NM`;
-      } else if (speed === null) {
-        document.getElementById("tsdResult").textContent = `Speed = ${(distance / time).toFixed(1)} knots`;
-      } else {
-        document.getElementById("tsdResult").textContent = `Time = ${(distance / speed).toFixed(2)} hours`;
-      }
-    }
-
-    function solveFuel() {
-      const fuel = getValue("fuelUsed");
-      const burn = getValue("burnRate");
-      const time = getValue("fuelTime");
-
-      if (countFilled([fuel, burn, time]) !== 2) {
-        document.getElementById("fuelResult").textContent = "Enter exactly two values.";
-        return;
-      }
-
-      if (fuel === null) {
-        document.getElementById("fuelResult").textContent = `Fuel Used = ${(burn * time).toFixed(1)} gallons`;
-      } else if (burn === null) {
-        document.getElementById("fuelResult").textContent = `Burn Rate = ${(fuel / time).toFixed(1)} GPH`;
-      } else {
-        document.getElementById("fuelResult").textContent = `Time = ${(fuel / burn).toFixed(2)} hours`;
-      }
-    }
-
-    function solveTOD() {
-      const altitude = getValue("todAltitude");
-      const gradient = getValue("todGradient");
-      const distance = getValue("todDistance");
-
-      if (countFilled([altitude, gradient, distance]) !== 2) {
-        document.getElementById("todResult").textContent = "Enter exactly two values.";
-        return;
-      }
-
-      if (distance === null) {
-        document.getElementById("todResult").textContent = `Distance = ${(altitude / gradient).toFixed(1)} NM`;
-      } else if (altitude === null) {
-        document.getElementById("todResult").textContent = `Altitude to Lose = ${(gradient * distance).toFixed(0)} feet`;
-      } else {
-        document.getElementById("todResult").textContent = `Descent Gradient = ${(altitude / distance).toFixed(0)} feet per NM`;
-      }
-    }
-
-    function solveClimb() {
-      const rate = getValue("climbRate");
-      const speed = getValue("climbSpeed");
-      const gradient = getValue("climbGradient");
-
-      if (countFilled([rate, speed, gradient]) !== 2) {
-        document.getElementById("climbResult").textContent = "Enter exactly two values.";
-        return;
-      }
-
-      if (gradient === null) {
-        document.getElementById("climbResult").textContent = `Climb Gradient = ${((rate * 60) / speed).toFixed(0)} feet per NM`;
-      } else if (rate === null) {
-        document.getElementById("climbResult").textContent = `Climb Rate = ${((gradient * speed) / 60).toFixed(0)} FPM`;
-      } else {
-        document.getElementById("climbResult").textContent = `Groundspeed = ${((rate * 60) / gradient).toFixed(1)} knots`;
-      }
-    }
-
-    function solveWB() {
-      const weight = getValue("wbWeight");
-      const arm = getValue("wbArm");
-      const moment = getValue("wbMoment");
-
-      if (countFilled([weight, arm, moment]) !== 2) {
-        document.getElementById("wbResult").textContent = "Enter exactly two values.";
-        return;
-      }
-
-      if (moment === null) {
-        document.getElementById("wbResult").textContent = `Moment = ${(weight * arm).toFixed(1)}`;
-      } else if (weight === null) {
-        document.getElementById("wbResult").textContent = `Weight = ${(moment / arm).toFixed(1)} lb`;
-      } else {
-        document.getElementById("wbResult").textContent = `Arm = ${(moment / weight).toFixed(2)} inches`;
-      }
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
