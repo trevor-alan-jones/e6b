@@ -1,25 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trevor Alan E6B</title>
-</head>
-<body>
-  <h1>Trevor Alan E6B</h1>
-  <p>Free aviation calculators for pilots and students.</p>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0f172a;
+      color: #f8fafc;
+    }
 
-  <h2>Time / Speed / Distance</h2>
-  <input id="speed" placeholder="Speed in knots">
-  <input id="time" placeholder="Time in hours">
-  <button onclick="calcDistance()">Calculate Distance</button>
-  <p id="result"></p>
+    header {
+      padding: 28px 18px;
+      text-align: center;
+      background: #020617;
+      border-bottom: 1px solid #334155;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      color: #cbd5e1;
+      margin-top: 8px;
+    }
+
+    main {
+      max-width: 950px;
+      margin: auto;
+      padding: 20px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #93c5fd;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      color: #e2e8f0;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: white;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 16px;
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .result {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #020617;
+      border: 1px solid #334155;
+      color: #bbf7d0;
+      font-weight: bold;
+    }
+
+    .note {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Trevor Alan E6B</h1>
+    <div class="subtitle">Aviation calculators for pilots, students, and instructors</div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Time / Speed / Distance</h2>
+      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+
+      <label>Speed - knots</label>
+      <input id="tsdSpeed" type="number" placeholder="Example: 120">
+
+      <label>Time - hours</label>
+      <input id="tsdTime" type="number" placeholder="Example: 2.5">
+
+      <label>Distance - nautical miles</label>
+      <input id="tsdDistance" type="number" placeholder="Example: 300">
+
+      <button onclick="solveTSD()">Solve</button>
+      <div class="result" id="tsdResult">Result will appear here.</div>
+    </div>
+
+    <div class="card">
+      <h2>Fuel / Burn / Time</h2>
+      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+
+      <label>Fuel Used - gallons</label>
+      <input id="fuelUsed" type="number" placeholder="Example: 24">
+
+      <label>Burn Rate - gallons per hour</label>
+      <input id="burnRate" type="number" placeholder="Example: 8">
+
+      <label>Time - hours</label>
+      <input id="fuelTime" type="number" placeholder="Example: 3">
+
+      <button onclick="solveFuel()">Solve</button>
+      <div class="result" id="fuelResult">Result will appear here.</div>
+    </div>
+
+    <div class="card">
+      <h2>Top of Descent</h2>
+      <p class="note">Enter any two values and leave distance, altitude, or descent gradient blank.</p>
+
+      <label>Altitude to Lose - feet</label>
+      <input id="todAltitude" type="number" placeholder="Example: 6000">
+
+      <label>Descent Gradient - feet per NM</label>
+      <input id="todGradient" type="number" placeholder="Example: 300">
+
+      <label>Distance - nautical miles</label>
+      <input id="todDistance" type="number" placeholder="Example: 20">
+
+      <button onclick="solveTOD()">Solve</button>
+      <div class="result" id="todResult">Result will appear here.</div>
+    </div>
+
+    <div class="card">
+      <h2>Climb Gradient</h2>
+      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+
+      <label>Climb Rate - feet per minute</label>
+      <input id="climbRate" type="number" placeholder="Example: 700">
+
+      <label>Groundspeed - knots</label>
+      <input id="climbSpeed" type="number" placeholder="Example: 90">
+
+      <label>Climb Gradient - feet per NM</label>
+      <input id="climbGradient" type="number" placeholder="Example: 467">
+
+      <button onclick="solveClimb()">Solve</button>
+      <div class="result" id="climbResult">Result will appear here.</div>
+    </div>
+
+    <div class="card">
+      <h2>Weight / Arm / Moment</h2>
+      <p class="note">Enter any two values and leave the one you want to solve blank.</p>
+
+      <label>Weight - pounds</label>
+      <input id="wbWeight" type="number" placeholder="Example: 170">
+
+      <label>Arm - inches</label>
+      <input id="wbArm" type="number" placeholder="Example: 37">
+
+      <label>Moment</label>
+      <input id="wbMoment" type="number" placeholder="Example: 6290">
+
+      <button onclick="solveWB()">Solve</button>
+      <div class="result" id="wbResult">Result will appear here.</div>
+    </div>
+  </main>
+
+  <footer>
+    Trevor Alan E6B • For training and educational use only
+  </footer>
 
   <script>
-    function calcDistance() {
-      const speed = Number(document.getElementById("speed").value);
-      const time = Number(document.getElementById("time").value);
-      document.getElementById("result").textContent =
-        `Distance: ${(speed * time).toFixed(1)} NM`;
+    function getValue(id) {
+      const value = document.getElementById(id).value;
+      return value === "" ? null : Number(value);
+    }
+
+    function countFilled(values) {
+      return values.filter(v => v !== null && !isNaN(v)).length;
+    }
+
+    function solveTSD() {
+      const speed = getValue("tsdSpeed");
+      const time = getValue("tsdTime");
+      const distance = getValue("tsdDistance");
+
+      if (countFilled([speed, time, distance]) !== 2) {
+        document.getElementById("tsdResult").textContent = "Enter exactly two values.";
+        return;
+      }
+
+      if (distance === null) {
+        document.getElementById("tsdResult").textContent = `Distance = ${(speed * time).toFixed(1)} NM`;
+      } else if (speed === null) {
+        document.getElementById("tsdResult").textContent = `Speed = ${(distance / time).toFixed(1)} knots`;
+      } else {
+        document.getElementById("tsdResult").textContent = `Time = ${(distance / speed).toFixed(2)} hours`;
+      }
+    }
+
+    function solveFuel() {
+      const fuel = getValue("fuelUsed");
+      const burn = getValue("burnRate");
+      const time = getValue("fuelTime");
+
+      if (countFilled([fuel, burn, time]) !== 2) {
+        document.getElementById("fuelResult").textContent = "Enter exactly two values.";
+        return;
+      }
+
+      if (fuel === null) {
+        document.getElementById("fuelResult").textContent = `Fuel Used = ${(burn * time).toFixed(1)} gallons`;
+      } else if (burn === null) {
+        document.getElementById("fuelResult").textContent = `Burn Rate = ${(fuel / time).toFixed(1)} GPH`;
+      } else {
+        document.getElementById("fuelResult").textContent = `Time = ${(fuel / burn).toFixed(2)} hours`;
+      }
+    }
+
+    function solveTOD() {
+      const altitude = getValue("todAltitude");
+      const gradient = getValue("todGradient");
+      const distance = getValue("todDistance");
+
+      if (countFilled([altitude, gradient, distance]) !== 2) {
+        document.getElementById("todResult").textContent = "Enter exactly two values.";
+        return;
+      }
+
+      if (distance === null) {
+        document.getElementById("todResult").textContent = `Distance = ${(altitude / gradient).toFixed(1)} NM`;
+      } else if (altitude === null) {
+        document.getElementById("todResult").textContent = `Altitude to Lose = ${(gradient * distance).toFixed(0)} feet`;
+      } else {
+        document.getElementById("todResult").textContent = `Descent Gradient = ${(altitude / distance).toFixed(0)} feet per NM`;
+      }
+    }
+
+    function solveClimb() {
+      const rate = getValue("climbRate");
+      const speed = getValue("climbSpeed");
+      const gradient = getValue("climbGradient");
+
+      if (countFilled([rate, speed, gradient]) !== 2) {
+        document.getElementById("climbResult").textContent = "Enter exactly two values.";
+        return;
+      }
+
+      if (gradient === null) {
+        document.getElementById("climbResult").textContent = `Climb Gradient = ${((rate * 60) / speed).toFixed(0)} feet per NM`;
+      } else if (rate === null) {
+        document.getElementById("climbResult").textContent = `Climb Rate = ${((gradient * speed) / 60).toFixed(0)} FPM`;
+      } else {
+        document.getElementById("climbResult").textContent = `Groundspeed = ${((rate * 60) / gradient).toFixed(1)} knots`;
+      }
+    }
+
+    function solveWB() {
+      const weight = getValue("wbWeight");
+      const arm = getValue("wbArm");
+      const moment = getValue("wbMoment");
+
+      if (countFilled([weight, arm, moment]) !== 2) {
+        document.getElementById("wbResult").textContent = "Enter exactly two values.";
+        return;
+      }
+
+      if (moment === null) {
+        document.getElementById("wbResult").textContent = `Moment = ${(weight * arm).toFixed(1)}`;
+      } else if (weight === null) {
+        document.getElementById("wbResult").textContent = `Weight = ${(moment / arm).toFixed(1)} lb`;
+      } else {
+        document.getElementById("wbResult").textContent = `Arm = ${(moment / weight).toFixed(2)} inches`;
+      }
     }
   </script>
 </body>
